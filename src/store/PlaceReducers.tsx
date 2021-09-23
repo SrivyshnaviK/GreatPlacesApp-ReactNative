@@ -1,7 +1,7 @@
 
 import { AnyAction } from "redux";
 import Place from "../models/Place";
-import { ADD_PLACE } from "./PlaceActions";
+import { ADD_PLACE, SET_PLACES } from "./PlaceActions";
 
 export type placeState = {
 	places: Array<Place>;
@@ -13,6 +13,12 @@ const initialState: placeState = {
 
 export default (state = initialState, action: AnyAction) => {
 	switch (action.type) {
+		case SET_PLACES:
+			return {
+			  places: action.places.map(
+				(pl:Place) => new Place(pl.id.toString(), pl.title, pl.imageUri)
+			  )
+			};
 		case ADD_PLACE:
 			const newPlace = new Place(
 				new Date().toString(),
