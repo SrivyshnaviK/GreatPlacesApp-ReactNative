@@ -29,7 +29,7 @@ export type placeType = Array<{
 export const ADD_PLACE = "ADD_PLACE";
 export const SET_PLACES = "SET_PLACES";
 
-export const addPlace = async (title: string, image: string) => {
+export const addPlace = (title: string, image: string) => {
   return async (
     dispatch: (arg0: {
       type: string;

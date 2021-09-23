@@ -48,11 +48,11 @@ const ImgPicker: React.FC<imageType> = ({ onImageTaken }) => {
 				) : (
 					<Image style={styles.image} source={{ uri: pickedImage }} />
 				)}
-				<Button
+				<View style={{marginTop:5}}><Button
 					title="Take Image"
 					color={colors.primary}
 					onPress={takeImageHandler}
-				/>
+				/></View>
 			</View>
 		</View>
 	);
@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		borderColor: "#ccc",
-		borderWidth: 1,
 	},
 	image: {
 		width: "100%",

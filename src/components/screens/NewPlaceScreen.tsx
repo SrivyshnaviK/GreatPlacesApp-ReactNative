@@ -1,5 +1,5 @@
-import { NavigationProp } from "@react-navigation/native";
-import React, { useState } from "react";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
 import {
 	ScrollView,
 	View,
@@ -13,14 +13,17 @@ import colors from "../../constants/colors";
 
 import * as placeActions from "../../store/PlaceActions";
 import ImagePicker from "../organisms/ImagePicker/ImagePicker";
+import LocationPicker from "../organisms/LocationPicker/LocationPicker";
 
 type NewPlaceScreenProps = {
 	navigation?: NavigationProp<any>;
+	route?: RouteProp<any>;
 };
 
-const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({ navigation }) => {
+const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({ navigation , route}) => {
 	const [titleValue, setTitleValue] = useState("");
 	const [selectedImage, setSelectedImage] = useState<string>("");
+	const [selectedLocation, setSelectedLocation] = useState({});
 
 	const dispatch = useDispatch();
 
@@ -36,6 +39,9 @@ const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({ navigation }) => {
 	const imageTakenHandler = (imagePath: string) => {
 		setSelectedImage(imagePath);
 	};
+	const locationPickedHandler = useCallback((location) => {
+		setSelectedLocation(location);
+	  }, []);
 
 	return (
 		<ScrollView>
@@ -47,6 +53,11 @@ const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({ navigation }) => {
 					value={titleValue}
 				/>
 				<ImagePicker onImageTaken={imageTakenHandler} />
+				<LocationPicker
+          navigation={navigation}
+          route={route}
+          onLocationPicked={locationPickedHandler}
+        />
 				<Button
 					title="Save Place"
 					color={colors.primary}
