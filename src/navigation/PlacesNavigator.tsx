@@ -12,6 +12,7 @@ import colors from "../constants/colors";
 
 const defaultStackNavOptions = {
 	headerStyle: {
+		
 		backgroundColor: colors.primary,
 	},
 };

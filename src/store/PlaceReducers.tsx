@@ -15,7 +15,7 @@ export default (state = initialState, action: AnyAction) => {
 	switch (action.type) {
 		case SET_PLACES:
 			return {
-				places: action.places.map(
+				places: action.places[0].map(
 					(pl: {
 						id: { toString: () => string };
 						title: string;
