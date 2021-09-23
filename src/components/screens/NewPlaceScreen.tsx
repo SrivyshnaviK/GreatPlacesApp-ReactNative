@@ -11,7 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import colors from "../../constants/colors";
 
-import * as placeActions from "../../store/PlaceActions";
+import * as placeActions from "../../store/PlaceActions"
 import ImagePicker from "../organisms/ImagePicker/ImagePicker";
 import LocationPicker from "../organisms/LocationPicker/LocationPicker";
 
@@ -20,7 +20,10 @@ type NewPlaceScreenProps = {
 	route?: RouteProp<any>;
 };
 
-const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({ navigation , route}) => {
+const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({
+	navigation,
+	route,
+}) => {
 	const [titleValue, setTitleValue] = useState("");
 	const [selectedImage, setSelectedImage] = useState<string>("");
 	const [selectedLocation, setSelectedLocation] = useState({});
@@ -32,16 +35,19 @@ const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({ navigation , route}) =>
 	};
 
 	const savePlaceHandler = () => {
-		dispatch(placeActions.addPlace(titleValue, selectedImage));
+		dispatch(
+			placeActions.addPlace(titleValue, selectedImage, selectedLocation)
+		);
 		navigation!.goBack();
 	};
 
 	const imageTakenHandler = (imagePath: string) => {
 		setSelectedImage(imagePath);
 	};
-	const locationPickedHandler = useCallback((location) => {
+	const locationPickedHandler = useCallback(location => {
 		setSelectedLocation(location);
-	  }, []);
+		console.log("newPlace----->", location);
+	}, []);
 
 	return (
 		<ScrollView>
@@ -54,10 +60,10 @@ const NewPlaceScreen: React.FC<NewPlaceScreenProps> = ({ navigation , route}) =>
 				/>
 				<ImagePicker onImageTaken={imageTakenHandler} />
 				<LocationPicker
-          navigation={navigation}
-          route={route}
-          onLocationPicked={locationPickedHandler}
-        />
+					navigation={navigation}
+					route={route}
+					onLocationPicked={locationPickedHandler}
+				/>
 				<Button
 					title="Save Place"
 					color={colors.primary}

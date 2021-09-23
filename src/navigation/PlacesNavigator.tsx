@@ -1,24 +1,27 @@
+
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import colors from "../constants/colors";
-import PlacesListScreen, { PlacesListScreenOptions } from "../components/screens/PlacesListScreen";
-import PlaceDetailScreen, { PlaceDetailScreenOptions } from "../components/screens/PlaceDetailScreen";
-import MapScreen from "../components/screens/MapScreen";
+
+import MapScreen, { MapScreenOptions } from "../components/screens/MapScreen";
 import NewPlaceScreen, { NewPlaceScreenOptions } from "../components/screens/NewPlaceScreen";
+import PlaceDetailScreen, { PlaceDetailScreenOptions } from "../components/screens/PlaceDetailScreen";
+import PlacesListScreen, { PlacesListScreenOptions } from "../components/screens/PlacesListScreen";
+import colors from "../constants/colors";
+
+
+const defaultStackNavOptions = {
+	headerStyle: {
+		backgroundColor: colors.primary,
+	},
+};
 
 const Stack = createStackNavigator();
 
 const PlacesNavigator = () => {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator
-				screenOptions={{
-					headerStyle: {
-						backgroundColor: colors.primary,
-					},
-				}}
-			>
+			<Stack.Navigator screenOptions={defaultStackNavOptions}>
 				<Stack.Screen
 					name="Places"
 					component={PlacesListScreen}
@@ -34,7 +37,11 @@ const PlacesNavigator = () => {
 					component={NewPlaceScreen}
 					options={NewPlaceScreenOptions}
 				/>
-				<Stack.Screen name="Map" component={MapScreen} />
+				<Stack.Screen
+					name="Map"
+					component={MapScreen}
+					options={MapScreenOptions}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

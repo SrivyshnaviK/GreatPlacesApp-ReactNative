@@ -16,9 +16,9 @@ const PlacesListScreen: React.FC<PlacesListScreenProps> = ({ navigation }) => {
 	const places = useSelector((state: RootState) => state.places.places);
 	const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(placeActions.loadPlaces());
-  }, [dispatch]);
+	useEffect(() => {
+		dispatch(placeActions.loadPlaces());
+	}, [dispatch]);
 
 	return (
 		<FlatList

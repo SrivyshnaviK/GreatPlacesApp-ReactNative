@@ -7,14 +7,26 @@ import {
   Alert,
   StyleSheet,
 } from "react-native";
-
+import Colors from "../../../constants/colors";
 import * as Location from "expo-location";
 import MapPreview from "../../molecules/MapPreview/MapPreview";
-import colors from "../../../constants/colors";
 
 const LocationPicker = (props: any) => {
+  const [pickedLocation, setPickedLocation] = useState({ lat: 0, lng: 0 });
   const [isFetching, setIsFetching] = useState(false);
-  const [pickedLocation, setPickedLocation] = useState<any>();
+
+  const mapPickedLocation = props.route!.params
+    ? props.route.params.pickedLocation
+    : null;
+
+  const { onLocationPicked } = props;
+
+  useEffect(() => {
+    if (mapPickedLocation) {
+      setPickedLocation(mapPickedLocation);
+      onLocationPicked(mapPickedLocation);
+    }
+  }, [mapPickedLocation, onLocationPicked]);
 
   const verifyPermissions = async () => {
     const result = await Location.requestForegroundPermissionsAsync();
@@ -28,6 +40,7 @@ const LocationPicker = (props: any) => {
     }
     return true;
   };
+
   const getLocationHandler = async () => {
     const hasPermission = await verifyPermissions();
     if (!hasPermission) {
@@ -43,28 +56,47 @@ const LocationPicker = (props: any) => {
         lat: location.coords.latitude,
         lng: location.coords.longitude,
       });
+      props.onLocationPicked({
+        lat: location.coords.latitude,
+        lng: location.coords.longitude,
+      });
     } catch (err) {
-      Alert.alert("Could not fetch location", "Pick the location on the map", [
+      Alert.alert("Could not  fetch location", "Pick the location on the map", [
         { text: "Okay" },
       ]);
     }
     setIsFetching(false);
   };
 
+  const pickOnMapHandler = () => {
+    props.navigation.navigate("Map");
+  };
+
   return (
     <View style={styles.locationPicker}>
-      <MapPreview style={styles.mapPreview} location={pickedLocation} onPress={()=>{}}>
+      <MapPreview
+        style={styles.mapPreview}
+        location={pickedLocation}
+        onPress={pickOnMapHandler}
+      >
         {isFetching ? (
-          <ActivityIndicator size="large" color={colors.primary} />
+          <ActivityIndicator size="large" color={Colors.primary} />
         ) : (
-          <Text>No location chosen yet!</Text>
+          <Text>No location picked yet.</Text>
         )}
       </MapPreview>
-      <Button
-        title="Get User Location"
-        color={colors.primary}
-        onPress={getLocationHandler}
-      />
+      <View style={styles.actions}>
+        <Button
+          title="get user location"
+          color={Colors.primary}
+          onPress={getLocationHandler}
+        />
+        <Button
+          title="Pick on map"
+          color={Colors.primary}
+          onPress={pickOnMapHandler}
+        />
+      </View>
     </View>
   );
 };
@@ -79,6 +111,11 @@ const styles = StyleSheet.create({
     height: 150,
     borderColor: "#ccc",
     borderWidth: 1,
+  },
+  actions: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
   },
 });
 
